@@ -1,2 +1,0 @@
-# mud
-Created with CodeSandbox
