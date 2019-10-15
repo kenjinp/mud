@@ -1,11 +1,9 @@
 import express from "express";
 
-export default () => {
-  const app = express();
-  const port = 3000;
+export default ({ port }) => {
+  const server = express()
+    .use(express.static("public"))
+    .listen(port, () => console.log(`Listening on ${PORT}`));
 
-  app.use(express.static("public"));
-
-  app.listen(port, () => console.log(`Client listening on port ${port}!`));
-  return app;
+  return server;
 };

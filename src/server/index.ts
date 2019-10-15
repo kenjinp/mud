@@ -12,9 +12,10 @@ import {
 } from "./store";
 
 console.log("hello from the server");
+const DEFAULT_PORT = 3000;
 
-const clientServer = makeServer();
-const socketIoServer = socket();
+const server = makeServer({ port: process.env.PORT || DEFAULT_PORT });
+const socketIoServer = socketIo(server);
 const store = createStore();
 
 socketIoServer.on(SocketEvent.CONNECT, (socket: socketIo.socket) => {
@@ -45,4 +46,4 @@ socketIoServer.on(SocketEvent.CONNECT, (socket: socketIo.socket) => {
 
 makeChat(socketIoServer);
 
-export { socketIoServer, clientServer };
+export { socketIoServer, server };

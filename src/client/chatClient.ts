@@ -3,7 +3,7 @@ import { Message } from "../model";
 
 import socketIo from "socket.io-client";
 
-const SERVER_URL = "http://localhost:8080";
+const SERVER_URL = "/";
 
 export default class SocketService {
   constructor() {
