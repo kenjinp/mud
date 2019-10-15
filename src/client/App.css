@@ -1,0 +1,31 @@
+@font-face {
+  font-family: "unscii-8-fantasy";
+  src: url("../../assets/fonts/unscii-8-fantasy.otf");
+}
+
+body {
+  margin: 0;
+  font-family: "unscii-8-fantasy";
+}
+
+canvas {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000;
+  background-image: linear-gradient(0deg, #000000 0%, #0b0517 90%);
+}
+
+div {
+  box-sizing: border-box;
+}
+
+.content {
+  position: absolute;
+}
+
+#app {
+  color: white;
+  position: absolute;
+  padding: 2em;
+}
