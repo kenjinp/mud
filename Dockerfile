@@ -9,6 +9,6 @@ COPY . /usr/src/app/
 RUN cp -a /tmp/node_modules /usr/src/app/
 RUN yarn build
 
-EXPOSE 3000
+EXPOSE $PORT
 
 CMD [ "/usr/local/bin/node", "dist/index.js" ]
