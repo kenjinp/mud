@@ -3,17 +3,33 @@
   src: url("../../assets/fonts/unscii-8-fantasy.otf");
 }
 
-body {
-  margin: 0;
-  font-family: "unscii-8-fantasy";
+@font-face {
+  font-family: "unscii-16";
+  src: url("../../assets/fonts/unscii-16.otf");
 }
 
-canvas {
+body {
+  margin: 0;
+  font-family: "unscii-16";
+  background-color: #fee2f8;
+  background-image: linear-gradient(0deg, #fee2f8, #dcf8ef 74%);
+}
+h1 {
+  font-family: "unscii-8-fantasy";
+  font-size: 4em;
+  color: #ffeb3b;
+  text-shadow: 1px 2px 2px #e91e63;
+}
+input {
+  font-family: "unscii-16";
+  padding: 0.5em;
+}
+.whole-canvas {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #000000;
-  background-image: linear-gradient(0deg, #000000 0%, #0b0517 90%);
 }
 
 div {
@@ -25,7 +41,24 @@ div {
 }
 
 #app {
-  color: white;
+  color: #333;
   position: absolute;
-  padding: 2em;
+  width: 100vw;
+  height: 100vh;
+}
+
+.home-view {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.view {
+  /* width: 100%;
+  height: 100%;
+  */
+  position: absolute;
 }

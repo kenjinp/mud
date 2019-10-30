@@ -4,6 +4,7 @@ import socketIo from "socket.io";
 
 import { Message, ChatMessageType } from "../model";
 import { selectRandomElement } from "../utils";
+import { createUser } from "./userManager";
 
 const chatMessages = [
   {
@@ -34,8 +35,12 @@ const chatMessages = [
   }
 ];
 
+const messages = [];
+
 export default (socketIoServer: socketIo.Server) => {
   socketIoServer.on("connect", (socket: socketIo.socket) => {
+    const user = createUser();
+
     console.log(socket.id);
     socket.on("message", (message: any) => {
       console.log("[server](message): %s", JSON.stringify(message));
@@ -47,7 +52,7 @@ export default (socketIoServer: socketIo.Server) => {
 
       socketIoServer.emit("message", {
         ...message,
-        user: socket.id
+        user: user.name
       });
     });
 

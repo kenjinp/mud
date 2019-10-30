@@ -1,3 +1,7 @@
 export const selectRandomElement = (items: any[]) => {
-  return items[Math.floor(Math.random() * items.length)];
+  return items[selectRandomElementIndex(items)];
+};
+
+export const selectRandomElementIndex = (items: any[]) => {
+  return Math.floor(Math.random() * items.length);
 };

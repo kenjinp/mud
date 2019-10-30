@@ -11,7 +11,8 @@
   color: white;
   background: #ffffff4d;
   padding: 0.5em;
-  font-family: "unscii-8-fantasy";
+  /* why does the font-family not propogate downwards? */
+  font-family: "unscii-16";
   font-size: 1em;
   line-height: 2em;
   width: 100%;
@@ -25,8 +26,6 @@
   list-style: none;
   margin: 0;
   padding: 1em;
-  height: 400px;
-  width: 300px;
   overflow: scroll;
 }
 

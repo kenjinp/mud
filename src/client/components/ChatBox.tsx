@@ -13,7 +13,8 @@ const ChatBox: React.FunctionComponent<{
   chatLog: ChatLog;
   emoteOptions: string[];
   onMessageInput: (messageInput: string) => void;
-}> = ({ chatLog, onMessageInput, emoteOptions }) => {
+  onChange?: (value: string) => void;
+}> = ({ chatLog, onMessageInput, onChange, emoteOptions }) => {
   const chatWindowRef = React.useRef(null);
   const [value, setValue] = React.useState("");
 
@@ -31,6 +32,7 @@ const ChatBox: React.FunctionComponent<{
   };
 
   const handleInputChange = (inputValue: string) => {
+    onChange && onChange(inputValue);
     setValue(inputValue);
   };
 

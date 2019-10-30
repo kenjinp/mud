@@ -15,11 +15,7 @@ export default class World {
   private worldObjects: {
     [uuid: string]: THREE.Object3D;
   };
-  constructor(
-    canvas: HTMLCanvasElement,
-    cameraPostion: number[],
-    { onCameraChange }: { onCameraChange: (event: Event) => void }
-  ) {
+  constructor(canvas: HTMLCanvasElement) {
     this.worldObjects = {};
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({
@@ -28,7 +24,6 @@ export default class World {
       alpha: true
     });
     this.renderer.shadowMap.enabled = true;
-    // this.renderer.shadowMapSoft = true;
     this.size = [canvas.clientWidth, canvas.clientHeight];
     this.renderer.setSize(...this.size);
 
@@ -40,8 +35,13 @@ export default class World {
     );
 
     this.camera.name = "debug-camera";
+    this.camera.position.set(-163.142841187104, 164.0910487831358, 146.01013589903187);
+    this.camera.rotation.set(-0.7262987712106262,
+      -0.3717559030073651,
+      ,-0.31212058809157306)
 
-    (this.camera.position.set as any)(...cameraPostion);
+      //-163.142841187104, 164.0910487831358, 146.01013589903187
+      //-0.8436387180748958, _y: -0.6388448962987707, _z: -0.5903801946609168
     this.scene.add(this.camera);
 
     const controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -50,11 +50,11 @@ export default class World {
     controls.enableZoom = true;
     controls.autoRotate = true;
 
-    controls.addEventListener("change", onCameraChange);
+    controls.addEventListener("change", things => {
+      console.log("change", this.camera);
+    });
 
     const starsGeometry = new THREE.Geometry();
-
-    // this.scene.add(makeSpear());
 
     for (let i = 0; i < 5000; i++) {
       const star = new THREE.Vector3();
@@ -83,9 +83,13 @@ export default class World {
     const starField2 = new THREE.Points(starsGeometry2, starsMaterial2);
     this.scene.add(starField);
     this.scene.add(starField2);
+    this.worldObjects["startField"] = starField;
+    this.worldObjects["startField2"] = starField2;
 
-    // const rot = new THREE.Vector3(0, 1, 1);
-    // this.camera.quaternion.setFromAxisAngle(rot, Math.PI / 2);
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const cube = new THREE.Mesh(geometry, material);
+    this.scene.add(cube);
 
     const groundGeo = new THREE.PlaneGeometry(100, 100, 10);
     const groundMat = new THREE.MeshPhongMaterial({
@@ -96,18 +100,30 @@ export default class World {
     const rot = new THREE.Vector3(1, 0, 0);
     ground.quaternion.setFromAxisAngle(rot, Math.PI / 2);
     ground.receiveShadow = true;
-    // this.scene.add(ground);
+    this.scene.add(ground);
 
     // LIGHTS
-    this.scene.add(new THREE.AmbientLight(0x666666));
-
-    const light = new THREE.DirectionalLight(0xdfebff, 1.75);
-    light.position.set(300, 400, 50);
-    light.position.multiplyScalar(1.3);
-
-    light.castShadow = true;
-
-    this.scene.add(light);
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+    hemiLight.color.setHSL(0.6, 1, 0.6);
+    hemiLight.groundColor.setHSL(0.095, 1, 0.75);
+    hemiLight.position.set(0, 50, 0);
+    this.scene.add(hemiLight);
+    //
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight.color.setHSL(0.1, 1, 0.95);
+    dirLight.position.set(-1, 1.75, 1);
+    dirLight.position.multiplyScalar(30);
+    this.scene.add(dirLight);
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.width = 2048;
+    dirLight.shadow.mapSize.height = 2048;
+    const d = 50;
+    dirLight.shadow.camera.left = -d;
+    dirLight.shadow.camera.right = d;
+    dirLight.shadow.camera.top = d;
+    dirLight.shadow.camera.bottom = -d;
+    dirLight.shadow.camera.far = 3500;
+    dirLight.shadow.bias = -0.0001;
 
     const axesHelper = new THREE.AxesHelper(5);
     this.scene.add(axesHelper);
@@ -125,8 +141,12 @@ export default class World {
     );
   }
 
-  update(delta: number) {
+  update(delta?: number) {
     this.renderer.render(this.scene, this.camera);
+    this.worldObjects.startField.rotation.x += 0.001;
+    this.worldObjects.startField.rotation.y += 0.001;
+    this.worldObjects.startField2.rotation.x -= 0.001;
+    this.worldObjects.startField2.rotation.y -= 0.001;
     return this;
   }
 

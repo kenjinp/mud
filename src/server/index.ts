@@ -1,6 +1,5 @@
 import makeChat from "./chat";
 import makeServer from "./client";
-import socket from "./socket";
 import socketIo from "socket.io";
 import { Message, SocketEvent, MessageType } from "../model";
 import {

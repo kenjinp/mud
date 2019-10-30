@@ -4,7 +4,6 @@ import { Message, MessageType } from "../model";
 import World from "./Render/World";
 
 document.getElementById("content").innerHTML = `
-<canvas id="world"></canvas>
 <div id="app">
 </div>
 `;

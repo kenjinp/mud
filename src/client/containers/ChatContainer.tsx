@@ -60,6 +60,9 @@ const ChatContainer: React.FunctionComponent<{}> = props => {
       emoteOptions={emoteOptions}
       chatLog={chatLog}
       onMessageInput={handleMessageInput}
+      onChange={() => {
+        playSound("text");
+      }}
     />
   );
 };
