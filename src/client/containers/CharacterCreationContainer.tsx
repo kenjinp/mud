@@ -4,11 +4,13 @@ import { useHistory } from "react-router-dom";
 
 import { playSound } from "../soundManager";
 import CharacterCreationComponent from "../components/CharacterCreation";
+import useGameStateService from "../useGameStateService";
 
 const CharacterCreationContainer: React.FunctionComponent = () => {
   const defaultName = nameByRace("human", { allowMultipleNames: true });
   const history = useHistory();
   const [userName, setUserName] = React.useState(defaultName);
+  const { createUser } = useGameStateService();
 
   const handleChange = (key: string, value: string) => {
     if (key === "name") {
@@ -21,9 +23,10 @@ const CharacterCreationContainer: React.FunctionComponent = () => {
     playSound("select");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = ({ name, color }) => {
     playSound("confirm");
     history.push("/game");
+    createUser(name, color);
   };
 
   return (

@@ -14,6 +14,8 @@ const soundLibrary = {
 
 const DEFAULT_VOLUME = 0.2;
 
+// TODO preload sounds and have load callback.
+
 export const playSound = (name: string) => {
   const sound = soundLibrary[name];
   if (!sound) {

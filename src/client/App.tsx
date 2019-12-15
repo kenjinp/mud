@@ -4,10 +4,11 @@ import { Switch, Route } from "react-router-dom";
 import { MemoryRouter as Router } from "react-router";
 
 import SocketContext from "./SocketContext";
-import SocketService from "./chatClient";
+import SocketService from "./socketClient";
 import HomeView from "./views/Home";
 import GameView from "./views/Game";
 import World from "./components/World";
+import Footer from "./components/Footer";
 
 const socketService = new SocketService();
 
@@ -16,9 +17,10 @@ const App = () => {
     <SocketContext.Provider value={socketService}>
       <World />
       <Router>
-        <Route path={"/"} exact={true} component={HomeView} />
-        <Route path={"/game"} component={GameView} />
+        <Route path={"/home"} exact={true} component={HomeView} />
+        <Route path={"/"} component={GameView} />
       </Router>
+      <Footer />
     </SocketContext.Provider>
   );
 };

@@ -1,48 +1,49 @@
 import makeChat from "./chat";
 import makeServer from "./client";
 import socketIo from "socket.io";
-import { Message, SocketEvent, MessageType } from "../model";
-import {
-  createStore,
-  createUserAction,
-  deleteUserAction,
-  createCameraAction,
-  deleteCamearAction
-} from "./store";
+import { SocketEvent, MessageType } from "../model";
+import Engine from "../ecs/engine";
+import makeEntity, { Sphere, Ground } from "./objects";
 
-console.log("hello from the server");
 const DEFAULT_PORT = 3000;
+console.log(`hello from the server, ${process.env.PORT || DEFAULT_PORT}`);
 
 const server = makeServer({ port: process.env.PORT || DEFAULT_PORT });
 const socketIoServer = socketIo(server);
-const store = createStore();
+const sphere = { ...Sphere, id: "sphere" };
+const ground = { ...Ground, id: "ground" };
 
-socketIoServer.on(SocketEvent.CONNECT, (socket: socketIo.socket) => {
-  const userAction = createUserAction();
-  const {
-    payload: { uuid }
-  } = userAction;
-  const cameraAction = createCameraAction(userAction.payload);
-  store.dispatch(userAction);
-  store.dispatch(cameraAction);
+// JSON SCHEMA
+// ID for frame
+// ID referenced from another
 
-  socket.emit(MessageType.HANDSHAKE, {
-    payload: {
-      you: userAction.payload,
-      everything: store.getState()
+try {
+  const engine = Engine([
+    {
+      update(delta: number) {
+        // process.stdout.clearLine();
+        // process.stdout.cursorTo(0);
+      }
     }
-  });
+  ]);
+  engine.run();
+} catch (error) {
+  console.log(error);
+}
 
-  socket.on(MessageType.ACTION, (m: Message) => {
-    console.log("[server](message): %s", JSON.parse(m.payload));
-  });
+// ON INIT, WHAT DO WE DO?
+// GET OBJECTS FROM DB
+// INITIALIZE THEM AS PHYISCAL OBJECTS
+// IF ANYONE IS CONNECTED, START SIMULATION
 
+socketIoServer.on(SocketEvent.CONNECT, async (socket: socketIo.Socket) => {
+  console.log("client connected");
+
+  socket.send(MessageType.HANDSHAKE, {
+    entities: [sphere, ground]
+  });
+  // makeChat(socketIoServer, socket, db);
   socket.on(SocketEvent.DISCONNECT, () => {
-    store.dispatch(deleteUserAction(uuid));
-    store.dispatch(deleteCamearAction(cameraAction.payload.uuid));
+    console.log("client disconencted");
   });
 });
-
-makeChat(socketIoServer);
-
-export { socketIoServer, server };

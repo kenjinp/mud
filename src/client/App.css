@@ -7,7 +7,11 @@
   font-family: "unscii-16";
   src: url("../../assets/fonts/unscii-16.otf");
 }
-
+a {
+  background: -webkit-linear-gradient(right, #ff7e00, #ff00dd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 body {
   margin: 0;
   font-family: "unscii-16";

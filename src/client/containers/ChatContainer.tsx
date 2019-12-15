@@ -34,7 +34,7 @@ const ChatContainer: React.FunctionComponent<{}> = props => {
   // This is probably very stupid, because it unsubscribes and changes on each message
   React.useEffect(() => {
     const subscription = socketService
-      .onMessage("message")
+      .onMessage("CHAT_MESSAGE")
       .subscribe(message => {
         console.log(message);
         setChatLog([...chatLog, message]);

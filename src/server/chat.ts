@@ -1,63 +1,27 @@
-import { createServer, Server } from "http";
-import express from "express";
 import socketIo from "socket.io";
+import Gun from "gun";
 
-import { Message, ChatMessageType } from "../model";
-import { selectRandomElement } from "../utils";
-import { createUser } from "./userManager";
-
-const chatMessages = [
-  {
-    type: ChatMessageType.MESSAGE,
-    user: "coolman69",
-    contents: "Wow what a cool thing!"
-  },
-  {
-    type: ChatMessageType.MESSAGE,
-    user: "xxXEliteBroXxx",
-    contents: "Yeah I know rite? :D"
-  },
-  {
-    type: ChatMessageType.MESSAGE,
-    user: "coolman69",
-    contents: "Hey, what a great job you're doing!"
-  },
-  {
-    type: ChatMessageType.EMOTE,
-    user: "xxXEliteBroXxx",
-    contents: "#User does a silly dance to pass the time"
-  },
-  {
-    type: ChatMessageType.MESSAGE,
-    user: "xxXEliteBroXxx",
-    contents:
-      "God creates dinosaurs. God destroys dinosaurs. God creates Man. Man destroys God. Man creates Dinosaurs. This thing comes fully loaded. AM/FM radio, reclining bucket seats, and... power windows. Hey, you know how I'm, like, always trying to save the planet? Here's my chance."
-  }
-];
-
-const messages = [];
-
-export default (socketIoServer: socketIo.Server) => {
-  socketIoServer.on("connect", (socket: socketIo.socket) => {
-    const user = createUser();
-
-    console.log(socket.id);
-    socket.on("message", (message: any) => {
-      console.log("[server](message): %s", JSON.stringify(message));
-
-      // TODO:
-      // validate messages
-      // process messages
-      // send to correct parties
-
-      socketIoServer.emit("message", {
-        ...message,
-        user: user.name
-      });
+export default (socketIoServer, socketConnection: socketIo.socket, db: Gun) => {
+  const messages = db.get("messages");
+  messages.map().on((message, id) => {
+    console.log({ message, id });
+    socketIoServer.emit("message", {
+      ...message,
+      user: "blah"
     });
+    socketConnection;
+  });
+  socketConnection.on("message", (message: any) => {
+    console.log("[server](message): %s", JSON.stringify(message));
+    messages.set(message);
 
-    socket.on("disconnect", () => {
-      console.log("Client disconnected");
-    });
+    // TODO:
+    // validate messages
+    // process messages
+    // send to correct parties (ie whisper)
+    // socketIoServer.emit("message", {
+    //   ...message,
+    //   user: user.name
+    // });
   });
 };

@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "@avatsaev/three-orbitcontrols-ts";
+import { Entity } from '../../ecs/engine';
 
 export interface Transform {
   position: { x: number; y: number; z: number };
@@ -49,10 +50,6 @@ export default class World {
     controls.dampingFactor = 0.25;
     controls.enableZoom = true;
     controls.autoRotate = true;
-
-    controls.addEventListener("change", things => {
-      console.log("change", this.camera);
-    });
 
     const starsGeometry = new THREE.Geometry();
 
@@ -154,5 +151,9 @@ export default class World {
 
   getWorldObjectByUUID(uuid: string) {
     return this.worldObjects[uuid] || null;
+  }
+
+  updateEntities(entities: Entity[]) {
+    // BOOP
   }
 }

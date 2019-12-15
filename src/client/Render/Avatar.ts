@@ -32,7 +32,10 @@ export default class Avatar extends Object3D {
       align: textAlign.center,
       font: "20px Arial",
       fillStyle: "#000000",
-      shadowColor: "rgba(0, 0, 0, 0.2)",
+      shadowColor: "#ffffff",
+      shadowBlur: 2,
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
       antialias: false
     });
     this.nameTag.scale.set(0.01, 0.01, 0.01);

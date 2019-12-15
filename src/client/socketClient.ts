@@ -1,5 +1,4 @@
 import { Observable } from "rxjs";
-import { Message } from "../model";
 
 import socketIo from "socket.io-client";
 
@@ -20,9 +19,9 @@ export default class SocketService {
     this.socket.emit(channel, message);
   }
 
-  public onMessage(channel): Observable<Message> {
-    return new Observable<Message>(observer => {
-      this.socket.on(channel, (data: Message) => observer.next(data));
+  public onMessage<T = any>(channel): Observable<T> {
+    return new Observable<T>(observer => {
+      this.socket.on(channel, (data: T) => observer.next(data));
       return () => {
         this.socket.off(channel);
       };

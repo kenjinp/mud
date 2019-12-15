@@ -6,7 +6,7 @@ import { selectRandomElementIndex } from "../../utils";
 const CharacterCreationComponent: React.FunctionComponent<{
   onChange(key: string, value: string): void;
   userName: string;
-  onSubmit(): void;
+  onSubmit({ username: string, color: number }): void;
 }> = ({ onChange, userName, onSubmit }) => {
   const colors = [
     0xf44336,
@@ -51,7 +51,10 @@ const CharacterCreationComponent: React.FunctionComponent<{
       className="character-creation"
       onSubmit={e => {
         e.preventDefault();
-        onSubmit();
+        onSubmit({
+          name: userName,
+          color: colors[selectedColorIndex]
+        });
       }}
     >
       <p>create your character!</p>
